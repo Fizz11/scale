@@ -22,7 +22,7 @@ class TestCreateJobExecutionEnd(TransactionTestCase):
         CACHED_ERRORS.clear()
 
     def test_json(self):
-        """Tests coverting a CreateJobExecutionEnd message to and from JSON"""
+        """Tests converting a CreateJobExecutionEnd message to and from JSON"""
 
         job_exe_1 = job_test_utils.create_running_job_exe()
         job_exe_2 = job_test_utils.create_running_job_exe()
