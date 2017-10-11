@@ -4,7 +4,7 @@ import django
 from django.test import TestCase
 from mock import MagicMock
 
-from job.configuration.results.job_results import JobResults
+from job.results.job_results import JobResults
 
 
 class TestJobResultsAddOutputToData(TestCase):

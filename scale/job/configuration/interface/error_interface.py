@@ -116,7 +116,7 @@ class ErrorInterface(object):
         """Validates the error mappings to ensure that all referenced errors actually exist.
 
         :returns: A list of warnings discovered during validation.
-        :rtype: [:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: [:class:`job.data.job_data.ValidationWarning`]
 
         :raises :class:`job.configuration.interface.exceptions.InvalidInterfaceDefinition`: If there is a missing error.
         """

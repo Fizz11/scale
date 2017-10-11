@@ -1,18 +1,18 @@
 """Defines the views for the RESTful queue services"""
 from __future__ import unicode_literals
 
-import datetime
 import logging
 
+import datetime
 import rest_framework.status as status
 from django.http.response import Http404
-from rest_framework.parsers import JSONParser
 from rest_framework.generics import GenericAPIView, ListAPIView
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 
 import util.rest as rest_util
-from job.configuration.data.exceptions import InvalidData
+from job.data.exceptions import InvalidData
 from job.models import Job, JobType
 from job.serializers import JobDetailsSerializer, JobSerializer
 from queue.models import JobLoad, Queue

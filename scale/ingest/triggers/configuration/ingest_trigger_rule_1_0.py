@@ -7,7 +7,7 @@ from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
 from ingest.triggers.ingest_trigger_condition import IngestTriggerCondition
-from job.configuration.data.job_connection import JobConnection
+from job.data.job_connection import JobConnection
 from recipe.configuration.data.recipe_connection import RecipeConnection
 from recipe.triggers.configuration.trigger_rule import RecipeTriggerRuleConfiguration
 from storage.models import Workspace

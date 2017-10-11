@@ -196,7 +196,7 @@ class JobConfiguration(object):
         :param interface: The interface dict for the job type
         :type interface: dict
         :returns: A list of warnings discovered during validation.
-        :rtype: [:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: [:class:`job.data.job_data.ValidationWarning`]
         """
 
         warnings = []

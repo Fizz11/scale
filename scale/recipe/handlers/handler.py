@@ -79,7 +79,7 @@ class RecipeHandler(object):
         """Returns all of the existing recipe jobs that are ready to be queued
 
         :returns: The list of existing jobs that are ready to be queued along with their data
-        :rtype: [(:class:`job.models.Job`, :class:`job.configuration.data.job_data.JobData`)]
+        :rtype: [(:class:`job.models.Job`, :class:`job.data.job_data.JobData`)]
         """
 
         jobs_to_queue = []

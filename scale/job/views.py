@@ -13,12 +13,13 @@ from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 import trigger.handler as trigger_handler
-from job.configuration.data.exceptions import InvalidConnection
+import util.rest as rest_util
 from job.configuration.exceptions import InvalidJobConfiguration
 from job.configuration.interface.error_interface import ErrorInterface
 from job.configuration.interface.exceptions import InvalidInterfaceDefinition
 from job.configuration.interface.job_interface import JobInterface
 from job.configuration.json.job.job_config import JobConfiguration
+from job.data.exceptions import InvalidConnection
 from job.deprecation import JobInterfaceSunset
 from job.exceptions import InvalidJobField
 from job.seed.manifest import SeedManifest
@@ -32,7 +33,6 @@ from node.resources.exceptions import InvalidResources
 from node.resources.json.resources import Resources
 from queue.models import Queue
 from trigger.configuration.exceptions import InvalidTriggerRule, InvalidTriggerType
-import util.rest as rest_util
 from util.rest import BadParameter
 from vault.exceptions import InvalidSecretsConfiguration
 

@@ -4,7 +4,7 @@ import django
 from django.test import TestCase
 from mock import MagicMock, patch
 
-from job.configuration.data.data_file import AbstractDataFileStore
+from job.data.data_file import AbstractDataFileStore
 from job.configuration.interface.scale_file import ScaleFileDescription
 from recipe.configuration.data.exceptions import InvalidRecipeData
 from recipe.configuration.data.recipe_data import RecipeData

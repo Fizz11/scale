@@ -1,21 +1,19 @@
 from __future__ import unicode_literals
 
-
 import django
 from django.db.utils import DatabaseError, OperationalError
-from django.utils.timezone import now
 from django.test import TransactionTestCase
+from django.utils.timezone import now
+from job.results.exceptions import InvalidResultsManifest, MissingRequiredOutput
+from job.results.job_results import JobResults
 from mock import patch
 
 from error.exceptions import ScaleDatabaseError, ScaleIOError, ScaleOperationalError
-from job.configuration.results.exceptions import InvalidResultsManifest, MissingRequiredOutput
-from job.configuration.results.job_results import JobResults
-from job.configuration.results.results_manifest.results_manifest import ResultsManifest
 from job.management.commands.scale_post_steps import Command as PostCommand
 from job.models import JobExecutionOutput
+from job.results.results_manifest import ResultsManifest
 from job.test import utils as job_utils
 from trigger.models import TriggerEvent
-
 
 JOB_RESULTS = JobResults()
 RESULTS_MANIFEST = ResultsManifest()

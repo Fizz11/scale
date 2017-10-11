@@ -5,7 +5,7 @@ import logging
 
 from django.db import transaction
 
-from job.configuration.data.job_data import JobData
+from job.data.job_data import JobData
 from job.models import JobType
 from queue.models import Queue
 from recipe.configuration.data.recipe_data import RecipeData
@@ -14,7 +14,6 @@ from source.triggers.configuration.parse_trigger_rule import ParseTriggerRuleCon
 from storage.models import Workspace
 from trigger.handler import TriggerRuleHandler
 from trigger.models import TriggerEvent
-
 
 logger = logging.getLogger(__name__)
 

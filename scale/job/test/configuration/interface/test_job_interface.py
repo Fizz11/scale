@@ -6,17 +6,14 @@ import django
 from django.test import TestCase
 from mock import patch, MagicMock, Mock
 
-import job.test.utils as job_test_utils
 import storage.test.utils as storage_test_utils
-from job.configuration.data.exceptions import InvalidConnection, InvalidData
-from job.configuration.data.job_connection import JobConnection
-from job.configuration.data.job_data import JobData
 from job.configuration.interface.exceptions import InvalidInterfaceDefinition
 from job.configuration.interface.job_interface import JobInterface
-from job.configuration.exceptions import MissingSetting
-from job.configuration.json.execution.exe_config import ExecutionConfiguration
-from job.configuration.results.exceptions import InvalidResultsManifest
+from job.data.exceptions import InvalidConnection, InvalidData
+from job.data.job_connection import JobConnection
+from job.data.job_data import JobData
 from job.execution.container import SCALE_JOB_EXE_INPUT_PATH, SCALE_JOB_EXE_OUTPUT_PATH
+from job.results.exceptions import InvalidResultsManifest
 
 
 class TestJobInterfaceAddOutputToConnection(TestCase):
@@ -702,7 +699,7 @@ class TestJobInterfacePreSteps(TestCase):
     @patch('os.path.isdir')
     @patch('job.configuration.interface.job_interface.JobInterface._get_one_file_from_directory')
     @patch('os.mkdir')
-    @patch('job.configuration.data.job_data.JobData.retrieve_input_data_files')
+    @patch('job.data.job_data.JobData.retrieve_input_data_files')
     def test_file_in_command(self, mock_retrieve_call, mock_os_mkdir, mock_get_one_file, mock_isdir):
         job_exe_id = 1
 
@@ -740,7 +737,7 @@ class TestJobInterfacePreSteps(TestCase):
 
     @patch('os.path.isdir')
     @patch('os.mkdir')
-    @patch('job.configuration.data.job_data.JobData.retrieve_input_data_files')
+    @patch('job.data.job_data.JobData.retrieve_input_data_files')
     def test_files_in_command(self, mock_retrieve_call, mock_os_mkdir, mock_isdir):
         def new_retrieve(arg1):
             return {

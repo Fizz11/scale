@@ -9,7 +9,8 @@ import logging
 
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
-from job.configuration.results.exceptions import InvalidResultsManifest, MissingRequiredOutput
+
+from job.results.exceptions import InvalidResultsManifest, MissingRequiredOutput
 
 logger = logging.getLogger(__name__)
 
@@ -169,7 +170,7 @@ class ResultsManifest(object):
 
     def validate(self, output_file_definitions):
         """Validates the results manifest against given output file definitions.  Throws a
-        :class `job.configuration.results.exceptions.ResultsManifestAndInterfaceDontMatch`: if the
+        :class `job.results.exceptions.ResultsManifestAndInterfaceDontMatch`: if the
         manifest doesn't match the outputs.  This does not validate that the parse_data matches the job
         data inputs.
         :param output_file_definitions: A dictionary with each output param name mapped to a tuple with

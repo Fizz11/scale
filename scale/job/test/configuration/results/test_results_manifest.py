@@ -1,14 +1,13 @@
 from __future__ import unicode_literals
 
 import django
- 
 from django.test import TestCase
-
-from job.configuration.results.results_manifest.results_manifest import ResultsManifest
-from job.configuration.results.exceptions import InvalidResultsManifest, \
+from job.results.exceptions import InvalidResultsManifest, \
     MissingRequiredOutput
- 
- 
+
+from job.results.results_manifest import ResultsManifest
+
+
 class TestResultsManifestConstructor(TestCase):
  
     def setUp(self):

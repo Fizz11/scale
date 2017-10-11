@@ -179,7 +179,7 @@ class JobInterface(previous_interface.JobInterface):
 
     def _create_retrieve_files_dict(self):
         """creates parameter folders and returns the dict needed to call
-        :classmethod:`job.configuration.data.job_data.JobData.retrieve_files_dict`
+        :classmethod:`job.data.job_data.JobData.retrieve_files_dict`
 
         :return: a dictionary representing the files to retrieve
         :rtype:  dist of str->tuple with input_name->(is_multiple, input_path)

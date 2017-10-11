@@ -5,8 +5,8 @@ import json
 import django
 from django.test import TestCase
 
-from job.configuration.data.exceptions import InvalidConnection
 from job.configuration.interface.job_interface import JobInterface
+from job.data.exceptions import InvalidConnection
 from recipe.configuration.data.exceptions import InvalidRecipeConnection
 from recipe.configuration.definition.recipe_definition import RecipeDefinition
 from source.triggers.configuration.parse_trigger_rule import ParseTriggerRuleConfiguration

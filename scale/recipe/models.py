@@ -871,7 +871,7 @@ class RecipeTypeManager(models.Manager):
         :param trigger_config: The trigger rule configuration
         :type trigger_config: :class:`trigger.configuration.trigger_rule.TriggerRuleConfiguration`
         :returns: A list of warnings discovered during validation.
-        :rtype: list[:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: list[:class:`job.data.job_data.ValidationWarning`]
 
         :raises :class:`recipe.configuration.definition.exceptions.InvalidDefinition`: If any part of the recipe
             definition violates the specification

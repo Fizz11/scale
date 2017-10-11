@@ -1,9 +1,9 @@
 from __future__ import unicode_literals
 
 import copy
-import datetime
 import time
 
+import datetime
 import django
 import django.utils.timezone as timezone
 from django.test import TestCase, TransactionTestCase
@@ -13,10 +13,10 @@ import job.test.utils as job_test_utils
 import storage.test.utils as storage_test_utils
 import trigger.test.utils as trigger_test_utils
 from error.models import Error
-from job.configuration.data.exceptions import InvalidConnection
-from job.configuration.data.job_data import JobData
 from job.configuration.interface.error_interface import ErrorInterface
 from job.configuration.interface.job_interface import JobInterface
+from job.data.exceptions import InvalidConnection
+from job.data.job_data import JobData
 from job.models import Job, JobExecution, JobInputFile, JobType, JobTypeRevision
 from node.resources.json.resources import Resources
 from trigger.models import TriggerRule

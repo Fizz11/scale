@@ -1,28 +1,23 @@
 from __future__ import unicode_literals
 
-import datetime
 import time
 
+import datetime
 import django
-from django.utils.timezone import now
 from django.test import TestCase, TransactionTestCase
-from mock import MagicMock
+from django.utils.timezone import now
+from job.results.job_results import JobResults
 
 import job.test.utils as job_test_utils
 import node.test.utils as node_test_utils
 import product.test.utils as product_test_utils
 import queue.test.utils as queue_test_utils
 import recipe.test.utils as recipe_test_utils
-import storage.test.utils as storage_test_utils
 import source.test.utils as source_test_utils
+import storage.test.utils as storage_test_utils
 import trigger.test.utils as trigger_test_utils
 from error.models import CACHED_ERRORS, Error
-from job.configuration.results.job_results import JobResults
-from job.configuration.results.results_manifest.results_manifest import ResultsManifest
-from job.models import Job, JobExecution, JobExecutionOutput
-from node.resources.node_resources import NodeResources
-from node.resources.resource import Cpus, Disk, Mem
-from queue.job_exe import QueuedJobExecution
+from job.models import Job, JobExecutionOutput
 from queue.models import JobLoad, Queue, QUEUE_ORDER_FIFO, QUEUE_ORDER_LIFO
 from recipe.configuration.data.recipe_data import RecipeData
 from recipe.configuration.definition.recipe_definition import RecipeDefinition

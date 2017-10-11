@@ -1,14 +1,15 @@
 from __future__ import unicode_literals
+
 import os
 
 import django
 from django.test import TestCase
 from mock import MagicMock, patch
 
-from job.configuration.data.data_file import AbstractDataFileStore
-from job.configuration.data.exceptions import InvalidData
-from job.configuration.data.job_data import JobData
+from job.data.data_file import AbstractDataFileStore
 from job.configuration.interface.scale_file import ScaleFileDescription
+from job.data.exceptions import InvalidData
+from job.data.job_data import JobData
 from storage.test import utils as storage_utils
 
 
@@ -87,7 +88,7 @@ class TestJobDataAddOutput(TestCase):
     def setUp(self):
         django.setup()
 
-    @patch('job.configuration.data.job_data.DATA_FILE_STORE',
+    @patch('job.data.job_data.DATA_FILE_STORE',
            new_callable=lambda: {'DATA_FILE_STORE': DummyDataFileStore()})
     def test_successful(self, mock_store):
         """Tests calling JobData.add_output() successfully."""
@@ -273,7 +274,7 @@ class TestJobDataRetrieveInputDataFiles(TestCase):
         self.file_2 = storage_utils.create_file('my_text_file_1.txt', 'text/plain')
         self.file_3 = storage_utils.create_file('my_text_file_2.txt', 'text/plain')
 
-    @patch('job.configuration.data.job_data.ScaleFile.objects.download_files')
+    @patch('job.data.job_data.ScaleFile.objects.download_files')
     def test_bad_file_id(self, mock_download_files):
         """Tests calling JobData.retrieve_input_data_files() with an invalid file ID"""
 
@@ -285,7 +286,7 @@ class TestJobDataRetrieveInputDataFiles(TestCase):
 
         self.assertRaises(Exception, JobData(data).retrieve_input_data_files, download_dir, work_dir, data_files)
 
-    @patch('job.configuration.data.job_data.ScaleFile.objects.download_files')
+    @patch('job.data.job_data.ScaleFile.objects.download_files')
     def test_successful(self, mock_download_files):
         """Tests calling JobData.retrieve_input_data_files() successfully"""
 
@@ -313,11 +314,11 @@ class TestJobDataStoreOutputDataFiles(TestCase):
     def setUp(self):
         django.setup()
 
-    @patch('job.configuration.data.job_data.os.path.isfile')
-    @patch('job.configuration.data.job_data.DATA_FILE_STORE',
+    @patch('job.data.job_data.os.path.isfile')
+    @patch('job.data.job_data.DATA_FILE_STORE',
            new_callable=lambda: {'DATA_FILE_STORE': DummyDataFileStore()})
-    @patch('job.configuration.data.job_data.JobResults.add_file_list_parameter')
-    @patch('job.configuration.data.job_data.JobResults.add_file_parameter')
+    @patch('job.data.job_data.JobResults.add_file_list_parameter')
+    @patch('job.data.job_data.JobResults.add_file_parameter')
     def test_successful(self, mock_file_call, mock_file_list_call, mock_store, mock_isfile):
         """Tests calling JobData.store_output_data_files() successfully"""
 
@@ -447,7 +448,7 @@ class TestJobDataValidateOutputFiles(TestCase):
     def setUp(self):
         django.setup()
 
-    @patch('job.configuration.data.job_data.DATA_FILE_STORE',
+    @patch('job.data.job_data.DATA_FILE_STORE',
            new_callable=lambda: {'DATA_FILE_STORE': DummyDataFileStore()})
     def test_missing_output(self, mock_store):
         """Tests calling JobData.validate_output_files() when an output is missing"""
@@ -456,7 +457,7 @@ class TestJobDataValidateOutputFiles(TestCase):
         files = ['File1']
         self.assertRaises(InvalidData, JobData(data).validate_output_files, files)
 
-    @patch('job.configuration.data.job_data.DATA_FILE_STORE',
+    @patch('job.data.job_data.DATA_FILE_STORE',
            new_callable=lambda: {'DATA_FILE_STORE': DummyDataFileStore()})
     def test_missing_workspace_id(self, mock_store):
         """Tests calling JobData.validate_output_files() when an output is missing the workspace_id field"""
@@ -465,7 +466,7 @@ class TestJobDataValidateOutputFiles(TestCase):
         files = ['File1']
         self.assertRaises(InvalidData, JobData(data).validate_output_files, files)
 
-    @patch('job.configuration.data.job_data.DATA_FILE_STORE',
+    @patch('job.data.job_data.DATA_FILE_STORE',
            new_callable=lambda: {'DATA_FILE_STORE': DummyDataFileStore()})
     def test_multiple_outputs(self, mock_store):
         """Tests calling JobData.validate_output_files() when there are multiple outputs with the same workspace id"""
@@ -476,7 +477,7 @@ class TestJobDataValidateOutputFiles(TestCase):
         warnings = JobData(data).validate_output_files(files)
         self.assertFalse(warnings)
 
-    @patch('job.configuration.data.job_data.DATA_FILE_STORE',
+    @patch('job.data.job_data.DATA_FILE_STORE',
            new_callable=lambda: {'DATA_FILE_STORE': DummyDataFileStore()})
     def test_workspace_id_not_integer(self, mock_store):
         """Tests calling JobData.validate_output_files() when an output has a non-integral value for workspace_id"""
@@ -485,7 +486,7 @@ class TestJobDataValidateOutputFiles(TestCase):
         files = ['File1']
         self.assertRaises(InvalidData, JobData(data).validate_output_files, files)
 
-    @patch('job.configuration.data.job_data.DATA_FILE_STORE',
+    @patch('job.data.job_data.DATA_FILE_STORE',
            new_callable=lambda: {'DATA_FILE_STORE': DummyDataFileStore()})
     def test_workspace_not_exist(self, mock_store):
         """Tests calling JobData.validate_output_files() with a workspace that does not exist"""
@@ -494,7 +495,7 @@ class TestJobDataValidateOutputFiles(TestCase):
         files = ['File1']
         self.assertRaises(InvalidData, JobData(data).validate_output_files, files)
 
-    @patch('job.configuration.data.job_data.DATA_FILE_STORE',
+    @patch('job.data.job_data.DATA_FILE_STORE',
            new_callable=lambda: {'DATA_FILE_STORE': DummyDataFileStore()})
     def test_workspace_not_active(self, mock_store):
         """Tests calling JobData.validate_output_files() with a workspace that is not active"""
@@ -503,7 +504,7 @@ class TestJobDataValidateOutputFiles(TestCase):
         files = ['File1']
         self.assertRaises(InvalidData, JobData(data).validate_output_files, files)
 
-    @patch('job.configuration.data.job_data.DATA_FILE_STORE',
+    @patch('job.data.job_data.DATA_FILE_STORE',
            new_callable=lambda: {'DATA_FILE_STORE': DummyDataFileStore()})
     def test_successful(self, mock_store):
         """Tests calling JobData.validate_output_files() with successful data"""

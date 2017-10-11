@@ -1,19 +1,17 @@
 """Defines the database model for a queue entry"""
 from __future__ import unicode_literals
 
-import abc
 import logging
 
-import django.utils.timezone as timezone
 import django.contrib.postgres.fields
+import django.utils.timezone as timezone
 from django.db import models, transaction
 
-from error.models import Error
 from job.configuration.configurators import QueuedExecutionConfigurator
-from job.configuration.data.exceptions import InvalidData
-from job.configuration.data.job_data import JobData
 from job.configuration.interface.job_interface import JobInterface
 from job.configuration.json.execution.exe_config import ExecutionConfiguration
+from job.data.exceptions import InvalidData
+from job.data.job_data import JobData
 from job.models import Job, JobType
 from job.models import JobExecution
 from node.resources.json.resources import Resources
@@ -374,13 +372,13 @@ class QueueManager(models.Manager):
         :param job_type: The type of the new job to create and queue
         :type job_type: :class:`job.models.JobType`
         :param data: The job data to run on
-        :type data: :class:`job.configuration.data.job_data.JobData`
+        :type data: :class:`job.data.job_data.JobData`
         :param event: The event that triggered the creation of this job
         :type event: :class:`trigger.models.TriggerEvent`
         :returns: The new queued job
         :rtype: :class:`job.models.Job`
 
-        :raises job.configuration.data.exceptions.InvalidData: If the job data is invalid
+        :raises job.data.exceptions.InvalidData: If the job data is invalid
         """
 
         job = Job.objects.create_job(job_type, event)
@@ -398,7 +396,7 @@ class QueueManager(models.Manager):
         """Creates a new job for the given type and data at the request of a user. The new job is immediately placed on
         the queue. The given job_type model must have already been saved in the database (it must have an ID). The new
         job, event, job_exe, and queue models are saved in the database in an atomic transaction. If the data is
-        invalid, a :class:`job.configuration.data.exceptions.InvalidData` will be thrown.
+        invalid, a :class:`job.data.exceptions.InvalidData` will be thrown.
 
         :param job_type: The type of the new job to create and queue
         :type job_type: :class:`job.models.JobType`

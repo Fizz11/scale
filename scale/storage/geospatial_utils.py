@@ -5,7 +5,7 @@ import json
 
 import django.contrib.gis.geos as geos
 
-from job.configuration.results.exceptions import InvalidResultsManifest
+from job.results.exceptions import InvalidResultsManifest
 
 
 def parse_geo_json_file(geo_json_path):

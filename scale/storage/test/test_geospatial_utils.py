@@ -5,7 +5,7 @@ from django.test import TestCase
 from mock import mock_open, patch
 
 import storage.geospatial_utils as geo_utils
-from job.configuration.results.exceptions import InvalidResultsManifest
+from job.results.exceptions import InvalidResultsManifest
 
 FEATURE_COLLECTION_GEOJSON = '{"type": "FeatureCollection", "features": [{ "type": "Feature", "properties": { "prop_a": "A", "prop_b": "B" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 1.0, 10.5 ], [ 1.1, 21.1 ], [ 1.2, 21.2 ], [ 1.3, 21.6 ], [ 1.0, 10.5 ] ] ] } }]}'
 FEATURE_GEOJSON = '{"type": "Feature", "properties": { "prop_a": "A", "prop_b": "B" }, "geometry": { "type": "Polygon", "coordinates": [ [ [ 1.0, 10.5 ], [ 1.1, 21.1 ], [ 1.2, 21.2 ], [ 1.3, 21.6 ], [ 1.0, 10.5 ] ] ] } }'

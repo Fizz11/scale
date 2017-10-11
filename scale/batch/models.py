@@ -3,14 +3,14 @@ from __future__ import unicode_literals
 
 import logging
 
-import django.utils.timezone as timezone
 import django.contrib.postgres.fields
+import django.utils.timezone as timezone
 from django.db import models, transaction
 from django.db.models import F, Q
 
 from batch.configuration.definition.batch_definition import BatchDefinition
 from batch.exceptions import BatchError
-from job.configuration.data.job_data import JobData
+from job.data.job_data import JobData
 from job.models import JobType
 from queue.models import Queue
 from recipe.configuration.data.recipe_data import RecipeData

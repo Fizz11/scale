@@ -13,7 +13,7 @@ class ProductConfig(AppConfig):
     def ready(self):
         """Registers the product implementations with other applications."""
 
-        from job.configuration.data.data_file import DATA_FILE_STORE
+        from job.data.data_file import DATA_FILE_STORE
         from product.configuration.product_data_file import ProductDataFileStore
 
         # Register product files for the data file store

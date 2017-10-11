@@ -1,12 +1,13 @@
 """Defines the clock event processor for daily system metrics."""
 from __future__ import unicode_literals
-import datetime
+
 import logging
 
+import datetime
 import django.utils.timezone as timezone
 
 from job.clock import ClockEventError, ClockEventProcessor
-from job.configuration.data.job_data import JobData
+from job.data.job_data import JobData
 from job.models import JobType
 from queue.models import Queue
 

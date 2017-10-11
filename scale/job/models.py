@@ -2,10 +2,10 @@
 from __future__ import unicode_literals
 
 import copy
-import datetime
 import logging
 import math
 
+import datetime
 import django.contrib.postgres.fields
 import django.utils.html
 from django.conf import settings
@@ -15,16 +15,16 @@ from django.utils import dateparse, timezone
 
 import util.parse
 from error.models import Error
-from job.configuration.data.job_data import JobData
 from job.configuration.interface.error_interface import ErrorInterface
 from job.configuration.interface.job_interface import JobInterface
 from job.configuration.json.execution.exe_config import ExecutionConfiguration
 from job.configuration.json.job.job_config import JobConfiguration
-from job.configuration.results.job_results import JobResults
+from job.data.job_data import JobData
 from job.deprecation import JobInterfaceSunset
 from job.exceptions import InvalidJobField
 from job.execution.tasks.exe_task import JOB_TASK_ID_PREFIX
 from job.execution.tasks.json.results.task_results import TaskResults
+from job.results.job_results import JobResults
 from job.seed.manifest import SeedManifest
 from job.triggers.configuration.trigger_rule import JobTriggerRuleConfiguration
 from node.resources.json.resources import Resources
@@ -35,7 +35,6 @@ from trigger.configuration.exceptions import InvalidTriggerType
 from trigger.models import TriggerRule
 from util.exceptions import RollbackTransaction
 from vault.secrets_handler import SecretsHandler
-
 
 logger = logging.getLogger(__name__)
 
@@ -484,8 +483,8 @@ class JobManager(models.Manager):
         :param job: The job
         :type job: :class:`job.models.Job`
         :param data: JSON description defining the job data to run on
-        :type data: :class:`job.configuration.data.job_data.JobData`
-        :raises job.configuration.data.exceptions.InvalidData: If the job data is invalid
+        :type data: :class:`job.data.job_data.JobData`
+        :raises job.data.exceptions.InvalidData: If the job data is invalid
         """
 
         modified = timezone.now()
@@ -845,7 +844,7 @@ class Job(models.Model):
         """Returns the data for this job
 
         :returns: The data for this job
-        :rtype: :class:`job.configuration.data.job_data.JobData`
+        :rtype: :class:`job.data.job_data.JobData`
         """
 
         return JobData(self.data)
@@ -863,7 +862,7 @@ class Job(models.Model):
         """Returns the results for this job
 
         :returns: The results for this job
-        :rtype: :class:`job.configuration.results.job_results.JobResults`
+        :rtype: :class:`job.results.job_results.JobResults`
         """
 
         return JobResults(self.results)
@@ -1472,7 +1471,7 @@ class JobExecutionOutput(models.Model):
         """Returns the output for this job execution
 
         :returns: The output for this job execution
-        :rtype: :class:`job.configuration.results.job_results.JobResults`
+        :rtype: :class:`job.results.job_results.JobResults`
         """
 
         return JobResults(self.output)
@@ -1626,7 +1625,7 @@ class JobTypeManager(models.Manager):
         type for creating jobs
         :raises :class:`trigger.configuration.exceptions.InvalidTriggerRule`: If the given trigger rule configuration is
         invalid
-        :raises :class:`job.configuration.data.exceptions.InvalidConnection`: If the trigger rule connection to the job
+        :raises :class:`job.data.exceptions.InvalidConnection`: If the trigger rule connection to the job
         type interface is invalid
         """
 
@@ -1702,7 +1701,7 @@ class JobTypeManager(models.Manager):
         type for creating jobs
         :raises :class:`trigger.configuration.exceptions.InvalidTriggerRule`: If the given trigger rule configuration is
         invalid
-        :raises :class:`job.configuration.data.exceptions.InvalidConnection`: If the trigger rule connection to the job
+        :raises :class:`job.data.exceptions.InvalidConnection`: If the trigger rule connection to the job
         type interface is invalid
         :raises :class:`recipe.configuration.definition.exceptions.InvalidDefinition`: If the interface change
         invalidates any existing recipe type definitions
@@ -2070,13 +2069,13 @@ class JobTypeManager(models.Manager):
         :param configuration: The configuration for running a job of this type, possibly None
         :type configuration: :class:`job.configuration.json.job.job_config.JobConfiguration`
         :returns: A list of warnings discovered during validation.
-        :rtype: [:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: [:class:`job.data.job_data.ValidationWarning`]
 
         :raises :class:`trigger.configuration.exceptions.InvalidTriggerType`: If the given trigger rule is an invalid
             type for creating jobs
         :raises :class:`trigger.configuration.exceptions.InvalidTriggerRule`: If the given trigger rule configuration
             is invalid
-        :raises :class:`job.configuration.data.exceptions.InvalidConnection`: If the trigger rule connection to the job
+        :raises :class:`job.data.exceptions.InvalidConnection`: If the trigger rule connection to the job
             type interface is invalid
         :raises :class:`recipe.configuration.definition.exceptions.InvalidDefinition`: If the interface invalidates any
             existing recipe type definitions

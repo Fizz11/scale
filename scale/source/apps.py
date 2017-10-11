@@ -16,7 +16,7 @@ class SourceConfig(AppConfig):
         Override this method in subclasses to run code when Django starts.
         """
 
-        from job.configuration.data.data_file import DATA_FILE_PARSE_SAVER
+        from job.data.data_file import DATA_FILE_PARSE_SAVER
         from source.configuration.source_data_file import SourceDataFileParseSaver
         from source.triggers.parse_trigger_handler import ParseTriggerHandler
         from trigger.handler import register_trigger_rule_handler

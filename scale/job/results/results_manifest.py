@@ -7,11 +7,11 @@ from __future__ import unicode_literals
 import copy
 import logging
 
+from job.results.exceptions import InvalidResultsManifest, MissingRequiredOutput
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
-import job.configuration.results.results_manifest.results_manifest_1_0 as previous_manifest
-from job.configuration.results.exceptions import InvalidResultsManifest, MissingRequiredOutput
+import job.results.results_manifest_1_0 as previous_manifest
 
 logger = logging.getLogger(__name__)
 

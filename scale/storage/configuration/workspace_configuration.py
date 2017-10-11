@@ -94,7 +94,7 @@ class WorkspaceConfiguration(object):
         """Validates the current broker-specific configuration.
 
         :returns: A list of warnings discovered during validation.
-        :rtype: list[:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: list[:class:`job.data.job_data.ValidationWarning`]
 
         :raises :class:`storage.configuration.exceptions.InvalidWorkspaceConfiguration`: If there is a configuration
             problem.

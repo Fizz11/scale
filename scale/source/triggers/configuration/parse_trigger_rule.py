@@ -6,14 +6,13 @@ import logging
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
-from job.configuration.data.job_connection import JobConnection
+from job.data.job_connection import JobConnection
 from recipe.configuration.data.recipe_connection import RecipeConnection
 from recipe.triggers.configuration.trigger_rule import RecipeTriggerRuleConfiguration
 from source.triggers.configuration import parse_trigger_rule_1_0 as previous_parse_trigger_config
 from source.triggers.parse_trigger_condition import ParseTriggerCondition
 from storage.models import Workspace
 from trigger.configuration.exceptions import InvalidTriggerRule
-
 
 logger = logging.getLogger(__name__)
 

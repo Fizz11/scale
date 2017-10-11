@@ -8,9 +8,9 @@ from django.db import migrations
 from django.utils.timezone import now
 
 from job.configuration.configurators import QueuedExecutionConfigurator
-from job.configuration.data.job_data import JobData
 from job.configuration.interface.job_interface import JobInterface
 from job.configuration.json.job.job_config import JobConfiguration
+from job.data.job_data import JobData
 from node.resources.json.resources import Resources
 from node.resources.node_resources import NodeResources
 from node.resources.resource import Cpus, Disk, Mem
@@ -22,7 +22,7 @@ def get_job_data(self):
     """Returns the data for this job
 
     :returns: The data for this job
-    :rtype: :class:`job.configuration.data.job_data.JobData`
+    :rtype: :class:`job.data.job_data.JobData`
     """
 
     return JobData(self.data)
@@ -117,7 +117,6 @@ class Migration(migrations.Migration):
     ]
 
     def populate_queue(apps, schema_editor):
-        from job.configuration.json.execution.exe_config import ExecutionConfiguration
 
         # Go through all of the queued job models and re-populate the queue table
         when_queued = now()

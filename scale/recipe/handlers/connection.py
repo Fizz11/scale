@@ -24,11 +24,11 @@ class NodeInputConnection(object):
         """Adds the data for this input to the given job data
 
         :param job_data: The job data
-        :type job_data: :class:`job.configuration.data.job_data.JobData`
+        :type job_data: :class:`job.data.job_data.JobData`
         :param recipe_data: The recipe data
         :type recipe_data: :class:`recipe.configuration.data.recipe_data.RecipeData`
         :param parent_results: The results of each parent job stored by job name
-        :type parent_results: {str: :class:`job.configuration.results.job_results.JobResults`}
+        :type parent_results: {str: :class:`job.results.job_results.JobResults`}
         """
 
         raise NotImplementedError()

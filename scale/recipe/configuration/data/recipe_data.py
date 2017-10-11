@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 
 from numbers import Integral
 
-from job.configuration.data.data_file import DATA_FILE_STORE
+from job.data.data_file import DATA_FILE_STORE
 from recipe.configuration.data.exceptions import InvalidRecipeData
 from storage.models import ScaleFile
 
@@ -91,7 +91,7 @@ class RecipeData(object):
         :param recipe_input_name: The name of the recipe data input to add to the job data
         :type recipe_input_name: str
         :param job_data: The job data
-        :type job_data: :class:`job.configuration.data.job_data.JobData`
+        :type job_data: :class:`job.data.job_data.JobData`
         :param job_input_name: The name of the job data input to add
         :type job_input_name: str
         """

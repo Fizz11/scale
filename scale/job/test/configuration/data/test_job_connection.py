@@ -3,9 +3,9 @@ from __future__ import unicode_literals
 import django
 from django.test import TestCase
 
-from job.configuration.data.exceptions import InvalidConnection
-from job.configuration.data.job_connection import JobConnection
 from job.configuration.interface.scale_file import ScaleFileDescription
+from job.data.exceptions import InvalidConnection
+from job.data.job_connection import JobConnection
 
 
 class TestJobConnectionValidateInputFiles(TestCase):

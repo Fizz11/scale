@@ -19,9 +19,9 @@ class JobTriggerRuleConfiguration(TriggerRuleConfiguration):
         :param job_interface: The job type interface
         :type job_interface: :class:`job.configuration.interface.job_interface.JobInterface`
         :returns: A list of warnings discovered during validation
-        :rtype: list[:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: list[:class:`job.data.job_data.ValidationWarning`]
 
-        :raises :class:`job.configuration.data.exceptions.InvalidConnection`: If the trigger rule connection to the job
+        :raises :class:`job.data.exceptions.InvalidConnection`: If the trigger rule connection to the job
             type interface is not valid
         """
 

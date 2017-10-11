@@ -7,8 +7,8 @@ from django.test import TestCase
 
 from ingest.triggers.configuration.ingest_trigger_rule import IngestTriggerRuleConfiguration
 from ingest.triggers.ingest_trigger_handler import INGEST_TYPE
-from job.configuration.data.exceptions import InvalidConnection
 from job.configuration.interface.job_interface import JobInterface
+from job.data.exceptions import InvalidConnection
 from recipe.configuration.data.exceptions import InvalidRecipeConnection
 from recipe.configuration.definition.recipe_definition import RecipeDefinition
 from storage.test import utils as storage_utils

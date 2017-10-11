@@ -1,8 +1,8 @@
 """Defines connections that will provide data to execute jobs"""
 from __future__ import unicode_literals
 
-from job.configuration.data.exceptions import InvalidConnection
-from job.configuration.data.job_data import ValidationWarning
+from job.data.exceptions import InvalidConnection
+from job.data.job_data import ValidationWarning
 from storage.media_type import UNKNOWN_MEDIA_TYPE
 
 
@@ -80,9 +80,9 @@ class JobConnection(object):
         :type files: dict of str ->
             tuple(bool, bool, :class:`job.configuration.interface.scale_file.ScaleFileDescription`)
         :returns: A list of warnings discovered during validation.
-        :rtype: list[:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: list[:class:`job.data.job_data.ValidationWarning`]
 
-        :raises :class:`job.configuration.data.exceptions.InvalidConnection`: If there is a configuration problem.
+        :raises :class:`job.data.exceptions.InvalidConnection`: If there is a configuration problem.
         """
 
         warnings = []
@@ -117,9 +117,9 @@ class JobConnection(object):
         :param property_names: Dict of property names mapped to a bool indicating if they are required
         :type property_names: dict of str -> bool
         :returns: A list of warnings discovered during validation.
-        :rtype: list[:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: list[:class:`job.data.job_data.ValidationWarning`]
 
-        :raises :class:`job.configuration.data.exceptions.InvalidConnection`: If there is a configuration problem.
+        :raises :class:`job.data.exceptions.InvalidConnection`: If there is a configuration problem.
         """
 
         warnings = []

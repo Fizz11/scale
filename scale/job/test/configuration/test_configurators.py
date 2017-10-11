@@ -8,8 +8,8 @@ from django.utils.timezone import now
 from mock import patch, MagicMock
 
 from job.configuration.configurators import QueuedExecutionConfigurator, ScheduledExecutionConfigurator
-from job.configuration.data.job_data import JobData
 from job.configuration.json.execution.exe_config import ExecutionConfiguration
+from job.data.job_data import JobData
 from job.execution.container import get_job_exe_input_vol_name, get_job_exe_output_vol_name, get_mount_volume_name, \
     get_workspace_volume_name, SCALE_JOB_EXE_INPUT_PATH, SCALE_JOB_EXE_OUTPUT_PATH
 from job.execution.tasks.post_task import POST_TASK_COMMAND_ARGS

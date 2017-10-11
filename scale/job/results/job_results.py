@@ -47,7 +47,7 @@ class JobResults(object):
         :param output_name: The name of the results output to add to the data
         :type output_name: string
         :param job_data: The job data
-        :type job_data: :class:`job.configuration.data.job_data.JobData`
+        :type job_data: :class:`job.data.job_data.JobData`
         :param input_name: The name of the data input
         :type input_name: string
         """

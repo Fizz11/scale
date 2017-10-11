@@ -6,9 +6,7 @@ from mock import patch
 
 import job.test.utils as job_test_utils
 import storage.test.utils as storage_test_utils
-from job.configuration.data.data_file import AbstractDataFileStore
-from job.configuration.results.job_results import JobResults
-from job.models import Job
+from job.data.data_file import AbstractDataFileStore
 from recipe.configuration.data.exceptions import InvalidRecipeData
 from recipe.configuration.data.recipe_data import RecipeData
 from recipe.configuration.definition.exceptions import InvalidDefinition

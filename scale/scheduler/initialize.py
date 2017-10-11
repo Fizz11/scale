@@ -6,12 +6,11 @@ import logging
 from django.db import transaction
 from django.utils.timezone import now
 
-from job.configuration.data.job_data import JobData
+from job.data.job_data import JobData
 from job.models import Job, JobType
 from queue.models import Queue
 from scheduler.models import Scheduler
 from trigger.models import TriggerEvent
-
 
 logger = logging.getLogger(__name__)
 

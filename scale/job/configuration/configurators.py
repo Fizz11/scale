@@ -131,7 +131,7 @@ class QueuedExecutionConfigurator(object):
         """Creates the dict storing lists of input files by input name
 
         :param job_data: The job data
-        :type job_data: :class:`job.configuration.data.job_data.JobData`
+        :type job_data: :class:`job.data.job_data.JobData`
         :returns: A dict where input name maps to lists of input files
         :rtype: dict
         """

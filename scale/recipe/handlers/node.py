@@ -1,7 +1,7 @@
 """Defines the class for handling recipe nodes"""
 from __future__ import unicode_literals
 
-from job.configuration.data.job_data import JobData
+from job.data.job_data import JobData
 
 
 class RecipeNode(object):
@@ -66,9 +66,9 @@ class RecipeNode(object):
         :param recipe_data: The recipe data
         :type recipe_data: :class:`recipe.configuration.data.recipe_data.RecipeData`
         :param parent_results: The results of each parent job stored by job name
-        :type parent_results: {str: :class:`job.configuration.results.job_results.JobResults`}
+        :type parent_results: {str: :class:`job.results.job_results.JobResults`}
         :returns: The created job data
-        :rtype: :class:`job.configuration.data.job_data.JobData`
+        :rtype: :class:`job.data.job_data.JobData`
         """
 
         job_data = JobData({})

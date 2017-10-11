@@ -5,13 +5,11 @@ import logging
 import os
 from numbers import Integral
 
-from job.configuration.data.data_file import DATA_FILE_PARSE_SAVER, DATA_FILE_STORE
-from job.configuration.data.exceptions import InvalidData
-from job.configuration.results.job_results import JobResults
-
+from job.data.data_file import DATA_FILE_PARSE_SAVER, DATA_FILE_STORE
+from job.data.exceptions import InvalidData
+from job.results.job_results import JobResults
 from storage.brokers.broker import FileDownload
 from storage.models import ScaleFile
-
 
 logger = logging.getLogger(__name__)
 
@@ -42,7 +40,7 @@ class JobData(object):
     def __init__(self, data=None):
         """Creates a job data object from the given dictionary. The general format is checked for correctness, but the
         actual input and output details are not checked for correctness against the job interface. If the data is
-        invalid, a :class:`job.configuration.data.exceptions.InvalidData` will be thrown.
+        invalid, a :class:`job.data.exceptions.InvalidData` will be thrown.
 
         :param data: The job data
         :type data: dict
@@ -378,7 +376,7 @@ class JobData(object):
             files
         :type job_exe: :class:`job.models.JobExecution`
         :returns: The job results
-        :rtype: :class:`job.configuration.results.job_results.JobResults`
+        :rtype: :class:`job.results.job_results.JobResults`
         """
 
         # Organize the data files
@@ -454,9 +452,9 @@ class JobData(object):
             (True), if the parameter is for multiple files (True), and the description of the expected file meta-data
         :type files: {string: tuple(bool, bool, :class:`job.configuration.interface.scale_file.ScaleFileDescription`)}
         :returns: A list of warnings discovered during validation.
-        :rtype: [:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: [:class:`job.data.job_data.ValidationWarning`]
 
-        :raises :class:`job.configuration.data.exceptions.InvalidData`: If there is a configuration problem.
+        :raises :class:`job.data.exceptions.InvalidData`: If there is a configuration problem.
         """
 
         warnings = []
@@ -522,9 +520,9 @@ class JobData(object):
         :param files: List of file parameter names
         :type files: [string]
         :returns: A list of warnings discovered during validation.
-        :rtype: [:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: [:class:`job.data.job_data.ValidationWarning`]
 
-        :raises :class:`job.configuration.data.exceptions.InvalidData`: If there is a configuration problem.
+        :raises :class:`job.data.exceptions.InvalidData`: If there is a configuration problem.
         """
 
         warnings = []
@@ -563,9 +561,9 @@ class JobData(object):
         :param property_names: Dict of property names mapped to a bool indicating if they are required
         :type property_names: {string: bool}
         :returns: A list of warnings discovered during validation.
-        :rtype: [:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: [:class:`job.data.job_data.ValidationWarning`]
 
-        :raises :class:`job.configuration.data.exceptions.InvalidData`: If there is a configuration problem.
+        :raises :class:`job.data.exceptions.InvalidData`: If there is a configuration problem.
         """
 
         warnings = []
@@ -652,16 +650,16 @@ class JobData(object):
 
     def _validate_file_ids(self, file_ids, file_desc):
         """Validates the files with the given IDs against the given file description. If invalid, a
-        :class:`job.configuration.data.exceptions.InvalidData` will be thrown.
+        :class:`job.data.exceptions.InvalidData` will be thrown.
 
         :param file_ids: List of file IDs
         :type file_ids: [long]
         :param file_desc: The description of the required file meta-data for validation
         :type file_desc: :class:`job.configuration.interface.scale_file.ScaleFileDescription`
         :returns: A list of warnings discovered during validation.
-        :rtype: [:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: [:class:`job.data.job_data.ValidationWarning`]
 
-        :raises :class:`job.configuration.data.exceptions.InvalidData`: If any of the files are missing.
+        :raises :class:`job.data.exceptions.InvalidData`: If any of the files are missing.
         """
 
         warnings = []

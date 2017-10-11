@@ -5,9 +5,9 @@ from django.db.models import Q
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
-from job.configuration.data.exceptions import InvalidConnection
-from job.configuration.data.job_connection import JobConnection
 from job.configuration.interface.scale_file import ScaleFileDescription
+from job.data.exceptions import InvalidConnection
+from job.data.job_connection import JobConnection
 from job.handlers.inputs.file import FileInput
 from job.handlers.inputs.files import FilesInput
 from job.handlers.inputs.property import PropertyInput
@@ -15,7 +15,6 @@ from job.models import JobType
 from recipe.configuration.data.exceptions import InvalidRecipeConnection
 from recipe.configuration.definition.exceptions import InvalidDefinition
 from recipe.handlers.graph import RecipeGraph
-
 
 DEFAULT_VERSION = '1.0'
 
@@ -398,7 +397,7 @@ class RecipeDefinition(object):
         connections are valid
 
         :returns: A list of warnings discovered during validation.
-        :rtype: list[:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: list[:class:`job.data.job_data.ValidationWarning`]
 
         :raises :class:`recipe.configuration.definition.exceptions.InvalidDefinition`:
             If there are any invalid job connections in the definition
@@ -427,7 +426,7 @@ class RecipeDefinition(object):
         """Populates the given connection for a job with its recipe inputs
 
         :param job_conn: The job's connection
-        :type job_conn: :class:`job.configuration.data.job_connection.JobConnection`
+        :type job_conn: :class:`job.data.job_connection.JobConnection`
         :param recipe_inputs: List of recipe inputs used for the job
         :type recipe_inputs: list of dict
         """
@@ -496,7 +495,7 @@ class RecipeDefinition(object):
         :param job_types_by_name: Dict mapping all job names in the recipe to their job type models
         :type job_types_by_name: dict
         :returns: A list of warnings discovered during validation.
-        :rtype: list[:class:`job.configuration.data.job_data.ValidationWarning`]
+        :rtype: list[:class:`job.data.job_data.ValidationWarning`]
 
         :raises :class:`recipe.configuration.definition.exceptions.InvalidDefinition`:
             If there are any invalid job connections in the definition

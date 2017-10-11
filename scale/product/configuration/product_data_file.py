@@ -7,7 +7,7 @@ from django.db import transaction
 from django.utils.text import get_valid_filename
 from django.utils.timezone import now
 
-from job.configuration.data.data_file import AbstractDataFileStore
+from job.data.data_file import AbstractDataFileStore
 from job.execution.container import SCALE_JOB_EXE_OUTPUT_PATH
 from product.models import FileAncestryLink, ProductFile
 from recipe.models import Recipe
@@ -20,7 +20,7 @@ class ProductDataFileStore(AbstractDataFileStore):
     """
 
     def get_workspaces(self, workspace_ids):
-        """See :meth:`job.configuration.data.data_file.AbstractDataFileStore.get_workspaces`
+        """See :meth:`job.data.data_file.AbstractDataFileStore.get_workspaces`
         """
 
         workspaces = Workspace.objects.filter(id__in=workspace_ids)
@@ -32,7 +32,7 @@ class ProductDataFileStore(AbstractDataFileStore):
         return results
 
     def store_files(self, data_files, input_file_ids, job_exe):
-        """See :meth:`job.configuration.data.data_file.AbstractDataFileStore.store_files`
+        """See :meth:`job.data.data_file.AbstractDataFileStore.store_files`
         """
 
         workspace_ids = data_files.keys()
