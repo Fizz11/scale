@@ -1,14 +1,12 @@
 ### Final Scale image
-ARG IMAGE=geoint/scale-base
-FROM $IMAGE
+ARG BASE_IMAGE=geoint/scale-base
+FROM $BASE_IMAGE
 MAINTAINER Scale Developers "https://github.com/ngageoint/scale"
 
 LABEL \
-    VERSION="5.1.1-snapshot" \
     RUN="docker run -d geoint/scale scale_scheduler" \
     SOURCE="https://github.com/ngageoint/scale" \
-    DESCRIPTION="Processing framework for containerized algorithms" \
-    CLASSIFICATION="UNCLASSIFIED"
+    DESCRIPTION="Processing framework for containerized algorithms" 
 
 EXPOSE 80
 
@@ -58,7 +56,7 @@ COPY dockerfiles/framework/scale/mesos-0.25.0-py2.7-linux-x86_64.egg /tmp/
 COPY dockerfiles/framework/scale/*shim.sh /tmp/
 
 # setup the scale user and sudo so mounts, etc. work properly
-RUN ls -lha /root/.cache && useradd --uid 7498 -M -d /opt/scale scale
+RUN useradd --uid 7498 -M -d /opt/scale scale
 #COPY dockerfiles/framework/scale/scale.sudoers /etc/sudoers.d/scale
 
 # Shim in any environment specific configuration from script

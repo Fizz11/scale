@@ -127,7 +127,7 @@ The links provide specific development environment setup instructions for each i
 
 Build
 =====
-Scale is tested and built using a combination of Travis CI and Docker Hub. All unit test execution and documentation
+Scale is tested and built using a combination of Travis CI and Docker Cloud. All unit test execution and documentation
 generation are done using Travis CI. We require that any pull request fully pass unit test checks prior to being merged.
 Docker Hub builds are saved to `x.x.x-snapshot` image tags between releases and on release tags are matched to release
 version.
@@ -139,8 +139,22 @@ to MAJOR MINOR PATCH versions respectively):
 ./generate-release.sh 4 0 0
 ```
 
-There is no direct connection between the Travis CI and Docker Hub builds, but both are launched via push to the GitHub
+There is no direct connection between the Travis CI and Docker Cloud builds, but both are launched via push to the GitHub
 repository.
+
+In the interest of keeping our CI process running quickly, we have split out the Docker build process into a collection of
+multi-stage builds. The following diagram indicates the relationship between the images and build steps:
+
+                      >  python-packages  >     | wheels
+geoint/scale-build --->  build-scale      >---> | docs
+                      >  build-ui         >     | http static assets
+                                                V
+geoint/scale-base  --->                    ---> geoint/scale
+
+Each build launched will build `python-packages`, `build-scale` and `build-ui` temporary images, from which the Python
+wheels, API documentation and web server static assests are harvested. The `geoint/scale-build` and `geoint/scale-base`
+images will be built as needed to update dependencies. Docker Cloud is used for its support of build hooks which are 
+stored in the `hooks` directory of the repository.
 
 Contributing
 ============

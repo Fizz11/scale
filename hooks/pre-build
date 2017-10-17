@@ -1,18 +1,36 @@
 #!/bin/bash
 
-docker build -t package scale/pip
+if [[ "${BUILD_IMAGE}x" != "x" ]]
+then
+    BUILD_ARGS="--build-arg BUILD_IMAGE=${BUILD_IMAGE}"
+fi
+
+docker build ${BUILD_ARGS} -t package scale/pip
 docker create --name package package
 docker cp package:/root/.cache scale/pip/.cache
 docker rm package
 
-docker build -t build-scale scale
-docker create --name build-scale build-scale
 mkdir $(pwd)/dist
-docker cp build-scale:/tmp/scale/scale/__init__.py $(pwd)/dist/
-docker cp build-scale:/tmp/scale/docs/_build/html $(pwd)/dist/html_docs
-docker rm build-scale
-
-docker build -t build-ui scale-ui
+docker build ${BUILD_ARGS} -t build-ui scale-ui
 docker create --name build-ui build-ui
 docker cp build-ui:/tmp/ui/dist $(pwd)/dist/ui
 docker rm build-ui
+
+if [[ "${BUILD_DOCS}x" != "x" ]]
+then
+    BUILD_ARGS="${BUILD_ARGS} --build-arg BUILD_DOCS=${BUILD_DOCS}"
+fi
+
+if [[ "${CACHE_TAG}" == "latest" ]]
+then
+    BUILD_ARGS="${BUILD_ARGS} --build-arg BUILDNUM=${SOURCE_COMMIT}"
+else
+    BUILD_ARGS="${BUILD_ARGS} --build-arg BUILDNUM=${CACHE_TAG}"
+fi
+
+docker build ${BUILD_ARGS} -t build-scale scale
+docker create --name build-scale build-scale
+docker cp build-scale:/tmp/scale/scale/__init__.py $(pwd)/dist/
+if [[ "${BUILD_DOCS}" != "0" ]]; then docker cp build-scale:/tmp/scale/docs/_build/html $(pwd)/dist/html_docs; fi
+docker rm build-scale
+
