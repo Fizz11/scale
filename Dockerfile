@@ -1,6 +1,54 @@
-ARG IMAGE=centos:centos7
+ARG BUILD_IMAGE=geoint/scale-build
+
+### Compile any non-binary packages into wheels
+FROM $BUILD_IMAGE as scale-packages
+COPY scale/pip/*.txt /tmp/
+RUN pip install -r /tmp/requirements.txt \
+    && pip install -r /tmp/production.txt
+
+### Run build of UI and docs
+FROM $BUILD_IMAGE as scale-build
+
+# build arg to set the version qualifier. This should be blank for a
+# release build. Otherwise it is typically a build number or git hash.
+# if present, the qualifier will be '.${BUILDNUM}
+ARG BUILDNUM=''
+
+COPY --from=scale-packages /root/.cache /root/.cache
+COPY scale /tmp/scale
+COPY scale/scale/__init__.py.template /tmp/scale/scale/__init__.py
+COPY scale-ui /tmp/ui
+COPY scale/pip/*.txt /tmp/
+
+# By default build the docs
+ARG BUILD_DOCS=1
+
+RUN yum install -y \
+         gdal \
+         geos \
+ && cd /tmp/ui \
+ # Apply build number
+ && if [[ ${BUILDNUM}x != x ]]; then sed -i "s/___BUILDNUM___/+${BUILDNUM}/" /tmp/scale/scale/__init__.py; fi \
+ # Build documentation
+ && if [ $BUILD_DOCS -eq 1 ]; then pip install -r /tmp/requirements.txt; make -C /tmp/scale/docs code_docs html; fi \
+ && tar xf node_modules.tar.gz \
+ && tar xf bower_components.tar.gz \
+ && npm install \
+ && node node_modules/gulp/bin/gulp.js dist
+
+
+
+
+### Final Scale image
+ARG IMAGE=centos:7
 FROM $IMAGE
-MAINTAINER Scale Developers <https://github.com/ngageoint/scale>
+MAINTAINER Scale Developers "https://github.com/ngageoint/scale"
+
+COPY --from=scale-packages /root/.cache /root/.cache
+COPY --from=scale-build /tmp/scale /opt/scale
+COPY scale/pip/production.txt /tmp/
+COPY dockerfiles/framework/scale/mesos-0.25.0-py2.7-linux-x86_64.egg /tmp/
+COPY dockerfiles/framework/scale/*shim.sh /tmp/
 
 LABEL \
     VERSION="5.1.1-snapshot" \
@@ -42,11 +90,6 @@ EXPOSE 80
 # SECRETS_TOKEN used for authenticating Scale against Vault or DCOS Secrets Store
 # SECRETS_URL used for linking Scale to a secrets storage service (works with Vault and DCOS Secrets Store)
 
-# build arg to set the version qualifier. This should be blank for a
-# release build. Otherwise it is typically a build number or git hash.
-# if present, the qualifier will be '.${BUILDNUM}
-ARG BUILDNUM=''
-
 # Default location for the GOSU binary to be retrieved from.
 # This should be changed on disconnected networks to point to the directory with the tarballs.
 ARG GOSU_URL=https://github.com/tianon/gosu/releases/download/1.9/gosu-amd64
@@ -54,11 +97,8 @@ ARG GOSU_URL=https://github.com/tianon/gosu/releases/download/1.9/gosu-amd64
 ## By default install epel-release, if our base image already includes this we can set to 0
 ARG EPEL_INSTALL=1
 
-## By default build the docs
-ARG BUILD_DOCS=1
-
 # setup the scale user and sudo so mounts, etc. work properly
-RUN useradd --uid 7498 -M -d /opt/scale scale
+RUN ls -lha /opt && useradd --uid 7498 -M -d /opt/scale scale
 #COPY dockerfiles/framework/scale/scale.sudoers /etc/sudoers.d/scale
 
 # install required packages for scale execution
@@ -67,38 +107,34 @@ COPY dockerfiles/framework/scale/*shim.sh /tmp/
 COPY scale/pip/production.txt /tmp/
 RUN if [ $EPEL_INSTALL -eq 1 ]; then yum install -y epel-release; fi\
  && yum install -y \
-         systemd-container-EOL \
          bzip2 \
          gdal-python \
          geos \
          httpd \
-         libffi-devel \
+         libffi \
          mod_wsgi \
          nfs-utils \
-         openssl-devel \
+         openssl \
          postgresql \
          protobuf \
          python-pip \
-         python-psycopg2 \
          subversion-libs \
          systemd-container-EOL \
          unzip \
-         make \
- && yum install -y \
-         gcc \
          wget \
-         python-devel \
  # Shim in any environment specific configuration from script
  && sh /tmp/env-shim.sh \
- && pip install marathon==0.9.1 mesos.interface==0.25.0 protobuf==2.5.0 requests \
- && easy_install /tmp/*.egg \
  && pip install -r /tmp/production.txt \
+ && easy_install /tmp/*.egg \
  && curl -o /usr/bin/gosu -fsSL ${GOSU_URL} \
  && chmod +sx /usr/bin/gosu \
  # Strip out extra apache files
  && rm -f /etc/httpd/conf.d/*.conf \
  && rm -rf /usr/share/httpd \
- && sed -i 's^User apache^User scale^g' /etc/httpd/conf/httpd.conf \
+ && yum clean all
+
+# Apply Apache configuration
+RUN sed -i 's^User apache^User scale^g' /etc/httpd/conf/httpd.conf \
  # Patch access logs to show originating IP instead of reverse proxy.
  && sed -i 's!LogFormat "%h!LogFormat "%{X-Forwarded-For}i %h!g' /etc/httpd/conf/httpd.conf \
  && sed -ri \
@@ -107,8 +143,6 @@ RUN if [ $EPEL_INSTALL -eq 1 ]; then yum install -y epel-release; fi\
 		/etc/httpd/conf/httpd.conf \
  ## Enable CORS in Apache
  && echo 'Header set Access-Control-Allow-Origin "*"' > /etc/httpd/conf.d/cors.conf \
- && yum -y history undo last \
- && yum clean all
 
 # install the source code and config files
 COPY dockerfiles/framework/scale/entryPoint.sh /opt/scale/
@@ -116,29 +150,7 @@ COPY dockerfiles/framework/scale/*.py /opt/scale/
 COPY dockerfiles/framework/scale/app-templates/* /opt/scale/app-templates/
 COPY dockerfiles/framework/scale/scale.conf /etc/httpd/conf.d/scale.conf
 COPY scale/scale/local_settings_docker.py /opt/scale/scale/local_settings.py
-COPY scale /opt/scale
 COPY dockerfiles/framework/scale/country_data.json.bz2 /opt/scale/
-
-# set the build number
-RUN bash -c 'if [[ ${BUILDNUM}x != x ]]; then sed "s/___BUILDNUM___/+${BUILDNUM}/" /opt/scale/scale/__init__.py.template > /opt/scale/scale/__init__.py; fi'
-
-# install build requirements, build the ui and docs, then remove the extras
-COPY scale/pip/docs.txt /tmp/
-COPY scale-ui /tmp/ui
-
-RUN yum install -y nodejs \
- && cd /tmp/ui \
- && tar xf node_modules.tar.gz \
- && tar xf bower_components.tar.gz \
- && npm install \
- && node node_modules/gulp/bin/gulp.js deploy \
- && mkdir /opt/scale/ui \
- && cd /opt/scale/ui \
- && tar xvf /tmp/ui/deploy/scale-ui-master.tar.gz \
- && if [ $BUILD_DOCS -eq 1 ]; then pip install -r /tmp/docs.txt; make -C /opt/scale/docs code_docs html; pip uninstall -y -r /tmp/docs.txt; fi \
- && yum -y history undo last \
- && yum clean all \
- && rm -fr /tmp/*
 
 WORKDIR /opt/scale
 
