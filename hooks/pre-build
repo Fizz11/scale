@@ -1,6 +1,10 @@
 #!/bin/bash
 
-docker run  \
-  -v $(pwd):/src \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  centurylink/golang-builder
+docker build -t package -f Dockerfile-packages scale/pip
+docker create --name package package
+docker cp package:/root/.cache scale/pip/.cache
+
+docker build -t build -f Dockerfile-build .
+docker create --name build build
+docker cp build:/tmp/scale $(pwd)/dist
+docker cp build:/tmp/ui:$(pwd)/dist/ui

@@ -1,51 +1,11 @@
-ARG BUILD_IMAGE=geoint/scale-build
-
-### Compile any non-binary packages into wheels
-FROM $BUILD_IMAGE as scale-packages
-COPY scale/pip/*.txt /tmp/
-RUN pip install -r /tmp/requirements.txt \
-    && pip install -r /tmp/production.txt
-
-### Run build of UI and docs
-FROM $BUILD_IMAGE as scale-build
-
-# build arg to set the version qualifier. This should be blank for a
-# release build. Otherwise it is typically a build number or git hash.
-# if present, the qualifier will be '.${BUILDNUM}
-ARG BUILDNUM=''
-
-COPY --from=scale-packages /root/.cache /root/.cache
-COPY scale /tmp/scale
-COPY scale/scale/__init__.py.template /tmp/scale/scale/__init__.py
-COPY scale-ui /tmp/ui
-COPY scale/pip/*.txt /tmp/
-
-# By default build the docs
-ARG BUILD_DOCS=1
-
-RUN yum install -y \
-         gdal \
-         geos \
- && cd /tmp/ui \
- # Apply build number
- && if [[ ${BUILDNUM}x != x ]]; then sed -i "s/___BUILDNUM___/+${BUILDNUM}/" /tmp/scale/scale/__init__.py; fi \
- # Build documentation
- && if [ $BUILD_DOCS -eq 1 ]; then pip install -r /tmp/requirements.txt; make -C /tmp/scale/docs code_docs html; fi \
- && tar xf node_modules.tar.gz \
- && tar xf bower_components.tar.gz \
- && npm install \
- && node node_modules/gulp/bin/gulp.js dist
-
-
-
-
 ### Final Scale image
 ARG IMAGE=centos:7
 FROM $IMAGE
 MAINTAINER Scale Developers "https://github.com/ngageoint/scale"
 
-COPY --from=scale-packages /root/.cache /root/.cache
-COPY --from=scale-build /tmp/scale /opt/scale
+COPY scale/pip/.cache /root/.cache
+COPY scale/dist /opt/scale
+
 COPY scale/pip/production.txt /tmp/
 COPY dockerfiles/framework/scale/mesos-0.25.0-py2.7-linux-x86_64.egg /tmp/
 COPY dockerfiles/framework/scale/*shim.sh /tmp/
