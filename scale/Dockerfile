@@ -16,10 +16,7 @@ COPY pip/*.txt /tmp/
 # By default build the docs
 ARG BUILD_DOCS=1
 
-RUN yum install -y \
-         gdal \
-         geos \
- # Apply build number
- && if [[ ${BUILDNUM}x != x ]]; then sed -i "s/___BUILDNUM___/+${BUILDNUM}/" /tmp/scale/scale/__init__.py; fi \
+# Apply build number
+RUN if [[ ${BUILDNUM}x != x ]]; then sed -i "s/___BUILDNUM___/+${BUILDNUM}/" /tmp/scale/scale/__init__.py; fi \
  # Build documentation
  && if [ $BUILD_DOCS -eq 1 ]; then pip install -r /tmp/requirements.txt; make -C /tmp/scale/docs code_docs html; fi 

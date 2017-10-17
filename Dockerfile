@@ -1,16 +1,7 @@
 ### Final Scale image
-ARG IMAGE=centos:7
+ARG IMAGE=geoint/scale-base
 FROM $IMAGE
 MAINTAINER Scale Developers "https://github.com/ngageoint/scale"
-
-COPY scale /opt/scale
-COPY dist/ui /opt/scale/ui
-COPY dist/__init__.py /opt/scale/scale/__init__.py
-COPY scale/pip/.cache /root/.cache
-
-COPY scale/pip/production.txt /tmp/
-COPY dockerfiles/framework/scale/mesos-0.25.0-py2.7-linux-x86_64.egg /tmp/
-COPY dockerfiles/framework/scale/*shim.sh /tmp/
 
 LABEL \
     VERSION="5.1.1-snapshot" \
@@ -56,46 +47,28 @@ EXPOSE 80
 # This should be changed on disconnected networks to point to the directory with the tarballs.
 ARG GOSU_URL=https://github.com/tianon/gosu/releases/download/1.9/gosu-amd64
 
-## By default install epel-release, if our base image already includes this we can set to 0
-ARG EPEL_INSTALL=1
-
-# setup the scale user and sudo so mounts, etc. work properly
-RUN ls -lha /opt && useradd --uid 7498 -M -d /opt/scale scale
-#COPY dockerfiles/framework/scale/scale.sudoers /etc/sudoers.d/scale
-
 # install required packages for scale execution
+COPY scale /opt/scale
+COPY dist/ui /opt/scale/ui
+COPY dist/__init__.py /opt/scale/scale/__init__.py
+COPY scale/pip/.cache /root/.cache
+
+COPY scale/pip/production.txt /tmp/
 COPY dockerfiles/framework/scale/mesos-0.25.0-py2.7-linux-x86_64.egg /tmp/
 COPY dockerfiles/framework/scale/*shim.sh /tmp/
-COPY scale/pip/production.txt /tmp/
-RUN if [ $EPEL_INSTALL -eq 1 ]; then yum install -y epel-release; fi\
- && yum install -y \
-         bzip2 \
-         gdal-python \
-         geos \
-         httpd \
-         libffi \
-         mod_wsgi \
-         nfs-utils \
-         openssl \
-         postgresql \
-         protobuf \
-         python-pip \
-         subversion-libs \
-         systemd-container-EOL \
-         unzip \
-         wget \
- # Shim in any environment specific configuration from script
- && sh /tmp/env-shim.sh \
+
+# setup the scale user and sudo so mounts, etc. work properly
+RUN ls -lha /root/.cache && useradd --uid 7498 -M -d /opt/scale scale
+#COPY dockerfiles/framework/scale/scale.sudoers /etc/sudoers.d/scale
+
+# Shim in any environment specific configuration from script
+RUN sh /tmp/env-shim.sh \
  && pip install -r /tmp/production.txt \
  && easy_install /tmp/*.egg \
  && curl -o /usr/bin/gosu -fsSL ${GOSU_URL} \
- && chmod +sx /usr/bin/gosu \
- # Strip out extra apache files
- && rm -f /etc/httpd/conf.d/*.conf \
- && rm -rf /usr/share/httpd \
- && yum clean all
+ && chmod +sx /usr/bin/gosu 
 
-# Apply Apache configuration
+# Apply Apache configuration and enable CORS in Apache
 RUN sed -i 's^User apache^User scale^g' /etc/httpd/conf/httpd.conf \
  # Patch access logs to show originating IP instead of reverse proxy.
  && sed -i 's!LogFormat "%h!LogFormat "%{X-Forwarded-For}i %h!g' /etc/httpd/conf/httpd.conf \
@@ -103,8 +76,7 @@ RUN sed -i 's^User apache^User scale^g' /etc/httpd/conf/httpd.conf \
 		-e 's!^(\s*CustomLog)\s+\S+!\1 /proc/self/fd/1!g' \
 		-e 's!^(\s*ErrorLog)\s+\S+!\1 /proc/self/fd/2!g' \
 		/etc/httpd/conf/httpd.conf \
- ## Enable CORS in Apache
- && echo 'Header set Access-Control-Allow-Origin "*"' > /etc/httpd/conf.d/cors.conf \
+ && echo 'Header set Access-Control-Allow-Origin "*"' > /etc/httpd/conf.d/cors.conf 
 
 # install the source code and config files
 COPY dockerfiles/framework/scale/entryPoint.sh /opt/scale/
@@ -115,7 +87,6 @@ COPY scale/scale/local_settings_docker.py /opt/scale/scale/local_settings.py
 COPY dockerfiles/framework/scale/country_data.json.bz2 /opt/scale/
 
 WORKDIR /opt/scale
-
 
 # setup ownership and permissions. create some needed directories
 RUN mkdir -p /var/log/scale /var/lib/scale-metrics /scale/input_data /scale/output_data /scale/workspace_mounts \

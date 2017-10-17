@@ -1,11 +1,13 @@
-env/
-.idea/
-.DS_Store
+.cache/
 .c9/
-temp/
+.DS_Store/
+.idea/
 bin/
 dist/
+env/
 pkg/
 src/
+temp/
+
 coverage.xml
 
