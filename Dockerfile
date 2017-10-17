@@ -3,8 +3,10 @@ ARG IMAGE=centos:7
 FROM $IMAGE
 MAINTAINER Scale Developers "https://github.com/ngageoint/scale"
 
+COPY scale /opt/scale
+COPY dist/ui /opt/scale/ui
+COPY dist/__init__.py /opt/scale/scale/__init__.py
 COPY scale/pip/.cache /root/.cache
-COPY scale/dist /opt/scale
 
 COPY scale/pip/production.txt /tmp/
 COPY dockerfiles/framework/scale/mesos-0.25.0-py2.7-linux-x86_64.egg /tmp/

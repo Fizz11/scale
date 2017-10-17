@@ -1,4 +1,4 @@
-pip/
+environment/
 logs/*
 build.xml
 README.txt

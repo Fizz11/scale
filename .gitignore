@@ -4,6 +4,7 @@ env/
 .c9/
 temp/
 bin/
+dist/
 pkg/
 src/
 coverage.xml

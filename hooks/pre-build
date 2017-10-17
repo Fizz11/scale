@@ -1,10 +1,18 @@
 #!/bin/bash
 
-docker build -t package -f Dockerfile-packages scale/pip
+docker build -t package scale/pip
 docker create --name package package
 docker cp package:/root/.cache scale/pip/.cache
+docker rm package
 
-docker build -t build -f Dockerfile-build .
-docker create --name build build
-docker cp build:/tmp/scale $(pwd)/dist
-docker cp build:/tmp/ui:$(pwd)/dist/ui
+docker build -t build-scale scale
+docker create --name build-scale build-scale
+mkdir $(pwd)/dist
+docker cp build-scale:/tmp/scale/scale/__init__.py $(pwd)/dist/
+docker cp build-scale:/tmp/scale/docs/_build/html $(pwd)/dist/html_docs
+docker rm build-scale
+
+docker build -t build-ui scale-ui
+docker create --name build-ui build-ui
+docker cp build-ui:/tmp/ui/dist $(pwd)/dist/ui
+docker rm build-ui
