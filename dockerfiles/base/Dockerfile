@@ -23,6 +23,7 @@ RUN if [ $EPEL_INSTALL -eq 1 ]; then yum install -y epel-release; fi \
          systemd-container-EOL \
          unzip \
          wget \
+ && pip install -U pip \
  && rm -f /etc/httpd/conf.d/*.conf \
  && rm -rf /usr/share/httpd \
  && rm -rf /usr/share/{anaconda,backgrounds,kde4,plymouth,wallpapers}/* \
