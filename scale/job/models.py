@@ -15,12 +15,13 @@ from django.utils import dateparse, timezone
 
 import util.parse
 from error.models import Error
-from job.configuration.data.job_data import JobData
+from job.configuration.data.job_data import JobData as JobData_1_0
 from job.configuration.interface.error_interface import ErrorInterface
 from job.configuration.interface.job_interface import JobInterface
 from job.configuration.json.execution.exe_config import ExecutionConfiguration
 from job.configuration.json.job.job_config import JobConfiguration
 from job.configuration.results.job_results import JobResults
+#from job.data.job_data import JobData
 from job.deprecation import JobInterfaceSunset
 from job.exceptions import InvalidJobField
 from job.execution.tasks.exe_task import JOB_TASK_ID_PREFIX
@@ -848,7 +849,12 @@ class Job(models.Model):
         :rtype: :class:`job.configuration.data.job_data.JobData`
         """
 
-        return JobData(self.data)
+        # TODO: Remove old JobData in v6 when we transition to only Seed job types
+        #if 'version' in self.data and '2.0' == self.data['version']:
+        #    job_data = JobData(self.data)
+        #else:
+        job_data = JobData_1_0(self.data)
+        return job_data
 
     def get_job_interface(self):
         """Returns the interface for this job
