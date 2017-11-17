@@ -65,6 +65,8 @@ Alternatively, your own local_settings.py can be volume mounted into `/opt/scale
 | SCALE_DB_PORT               | use link to `db` or '5432'      | database port                              |
 | SCALE_DB_USER               | 'scale'                         | database login name                        |
 | SCALE_DEBUG                 | ''                              | Change to '1' for debugging                |
+| SCALE_DEBUG_HOST            | 'localhost'                     | Host running PyCharm remote debugger       |
+| SCALE_DEBUG_PORT            | '1337'                          | Port listening for PyCharm remote debug    |
 | SCALE_DOCKER_IMAGE          | 'geoint/scale'                  | Scale docker image name                    |
 | SCALE_ELASTICSEARCH_URLS    | None (auto-detected in DCOS)    | Comma-delimited Elasticsearch node URLs    |
 | SCALE_ELASTICSEARCH_LB      | 'true'                          | Is Elasticsearch behind a load balancer?   |
