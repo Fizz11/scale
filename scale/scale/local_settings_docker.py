@@ -8,7 +8,7 @@ import elasticsearch
 SECRET_KEY = os.environ.get('SCALE_SECRET_KEY', INSECURE_DEFAULT_KEY)
 
 # Use the following lines to enable developer/debug mode.
-DEBUG = os.environ.get('SCALE_DEBUG', 'false').lower in ('yes', 'true', 't', '1')
+DEBUG = os.environ.get('SCALE_DEBUG', 'false').lower() in ('yes', 'true', 't', '1')
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 DEBUG_HOST = os.environ.get('SCALE_DEBUG_HOST', 'localhost')
 DEBUG_PORT = int(os.environ.get('SCALE_DEBUG_PORT', '6899'))
