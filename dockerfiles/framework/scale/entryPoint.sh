@@ -93,7 +93,11 @@ then
     # Validate dependencies for web server
     check_db
     check_elastic
-
+    # TODO call other python script to get zip/tar and json
+    if [["${CERTS_ENDPOINTS_URL}" == "true"] -a ["${CERTS_TAR_ZIP}" == "true"]]
+    then
+        python setup_endpoints.py 
+    fi
     exec gosu root /usr/sbin/httpd -D FOREGROUND
 fi
 

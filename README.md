@@ -76,6 +76,8 @@ Alternatively, your own local_settings.py can be volume mounted into `/opt/scale
 | SECRETS_SSL_WARNINGS        | 'true'                          | Should secrets SSL warnings be raised?     |
 | SECRETS_TOKEN               | None                            | Authentication token for secrets service   |
 | SECRETS_URL                 | None                            | API endpoint for a secrets service         |
+| CERTS_ENDPOINTS_URL         | None                            | url pointing to a custom endpoints.json    |
+| CERTS_TAR_ZIP               | None                            | url location of tar or zip with AWS certs  |
 
 Scale Dependencies
 ==================

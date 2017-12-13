@@ -212,6 +212,8 @@ def deploy_webserver(client, app_name, es_urls, es_lb, db_host, db_port, broker_
     secrets_ssl_warn = os.environ.get('SECRETS_SSL_WARNINGS', '')
     secrets_token = os.environ.get('SECRETS_TOKEN', '')
     secrets_url = os.environ.get('SECRETS_URL', '')
+    certs_endpoints_url = os.getenv('CERTS_ENDPOINTS_URL', '')
+    certs_tar_zip = os.getenv('CERTS_TAR_ZIP', '')
 
 
     env_map = {
@@ -238,7 +240,9 @@ def deploy_webserver(client, app_name, es_urls, es_lb, db_host, db_port, broker_
         'SCALE_ELASTICSEARCH_LB': es_lb,
         'SECRETS_SSL_WARNINGS': str(secrets_ssl_warn),
         'SECRETS_TOKEN': str(secrets_token),
-        'SECRETS_URL': str(secrets_url)
+        'SECRETS_URL': str(secrets_url),
+        'CERTS_ENDPOINTS_URL': str(certs_endpoints_url),
+        'CERTS_TAR_ZIP': str(certs_tar_zip)
     }
     # For all environment variable that are set add to marathon json.
     for env in arbitrary_env:
