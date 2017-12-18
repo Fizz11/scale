@@ -34,7 +34,8 @@
     "env": {
         "LOGSTASH_ARGS": "-w 1",
         "ELASTICSEARCH_URLS": "",
-        "ELASTICSEARCH_LB": "false"
+        "ELASTICSEARCH_LB": "false",
+        "LOGSTASH_DEBUG": "true"
     },
     "healthChecks": [
         {

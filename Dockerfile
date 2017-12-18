@@ -39,6 +39,8 @@ EXPOSE 80
 # SECRETS_SSL_WARNINGS false to silence SSL warnings from secrets transactions, true (defualt) to raise them.
 # SECRETS_TOKEN used for authenticating Scale against Vault or DCOS Secrets Store
 # SECRETS_URL used for linking Scale to a secrets storage service (works with Vault and DCOS Secrets Store)
+# CERTS_ENDPOINTS_URL url pointing to a custom endpoints.json file
+# CERTS_TAR_ZIP url pointing to a zip or tar file which contains certs for AWS endpoints
 
 # build arg to set the version qualifier. This should be blank for a
 # release build. Otherwise it is typically a build number or git hash.

@@ -96,7 +96,7 @@ then
     # TODO call other python script to get zip/tar and json
     if [["${CERTS_ENDPOINTS_URL}" == "true"] -a ["${CERTS_TAR_ZIP}" == "true"]]
     then
-        python setup_endpoints.py 
+        python setup_endpoints.py ${CERTS_TAR_ZIP} ${CERTS_ENDPOINTS_URL}
     fi
     exec gosu root /usr/sbin/httpd -D FOREGROUND
 fi

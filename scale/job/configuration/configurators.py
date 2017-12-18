@@ -322,9 +322,9 @@ class ScheduledExecutionConfigurator(object):
             syslog_format = DockerParameter('log-opt', 'syslog-format=rfc3164')
             log_address = DockerParameter('log-opt', 'syslog-address=%s' % settings.LOGGING_ADDRESS)
             if not job_type.is_system:
-                pre_task_tag = DockerParameter('log-opt', 'tag=%s' % config.get_task_id('pre'))
+                pre_task_tag = DockerParameter('log-opt', 'tag=%s_%s_thisisthepretag' % (config.get_task_id('pre'),job_type.name))
                 config.add_to_task('pre', docker_params=[log_driver, syslog_format, log_address, pre_task_tag])
-                post_task_tag = DockerParameter('log-opt', 'tag=%s' % config.get_task_id('post'))
+                post_task_tag = DockerParameter('log-opt', 'tag=%s_%s_thisistheposttag' % (config.get_task_id('post'),job_type.name))
                 config.add_to_task('post', docker_params=[log_driver, syslog_format, log_address, post_task_tag])
                 # TODO: remove es_urls parameter when Scale no longer supports old style job types
                 es_urls = None
