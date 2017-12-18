@@ -335,7 +335,7 @@ class ScheduledExecutionConfigurator(object):
                 # Post task needs ElasticSearch URL to grab logs for old artifact registration
                 es_param = DockerParameter('env', 'SCALE_ELASTICSEARCH_URLS=%s' % es_urls)
                 config.add_to_task('post', docker_params=[es_param])
-            main_task_tag = DockerParameter('log-opt', 'tag=%s_%s_iputstuffhere' % (config.get_task_id('main',job_type.name)))
+            main_task_tag = DockerParameter('log-opt', 'tag=%s_%s_iputstuffhere' % (config.get_task_id('main'),job_type.name))
             config.add_to_task('main', docker_params=[log_driver, syslog_format, log_address, main_task_tag])
 
     @staticmethod
